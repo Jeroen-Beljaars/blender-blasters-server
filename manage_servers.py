@@ -6,7 +6,7 @@ import re
 from multiprocessing import Process
 import string
 import random
-from Network.server import Server
+from server import Server
 
 with open("network_config.json") as file:
     network_config = json.load(file)
