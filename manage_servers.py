@@ -1,8 +1,6 @@
 import socket
 import threading
 import json
-import time
-import re
 from multiprocessing import Process
 import string
 import random
@@ -11,9 +9,10 @@ from server import Server
 with open("network_config.json") as file:
     network_config = json.load(file)
 
-class Manager():
+class Manager:
     def __init__(self):
-        self.capacity = 4
+        self.capacity = 2
+        self.threads = []
 
         self.ip = network_config['manager_ip']
         self.port = 9998
@@ -51,9 +50,15 @@ class Manager():
                 decoded_packet = json.loads(request.decode())
                 if "host_server" in decoded_packet.keys():
                     if client not in self.hosting_clients:
-                        self.hosting_clients[client] = ""
-                        self.new_server(decoded_packet['host_server'])
-                        self.requester.append(client)
+                        if len(self.database['server_infos']) < self.capacity:
+                            self.hosting_clients[client] = ""
+                            self.new_server(decoded_packet['host_server'])
+                            self.requester.append(client)
+                            break
+                        else:
+                            client.sendall(
+                                json.dumps({"server_full": "the servers are full please try again later."}).encode()
+                            )
                     else:
                         client.sendall(json.dumps({"allready_hosting": self.hosting_clients[client]}).encode())
                 if "new_server" in decoded_packet.keys():
@@ -88,6 +93,7 @@ class Manager():
                             self.hosting_clients.pop(key)
                             break
                     print("[-] server {} closed".format(ip_port))
+                    break
                 if "join" in decoded_packet.keys():
                     try:
                         dns_infos = self.database['dns'][decoded_packet['join']]
@@ -109,8 +115,9 @@ class Manager():
             client_handler.start()
 
     def new_server(self, config):
-        serv = Process(target=Server, args=(config,))
-        serv.start()
+        server = Process(target=Server, args=(config,))
+        server.daemon = True
+        server.start()
         print("[i] New server started")
 
     def generate_dns(self, size=6, chars=string.ascii_uppercase + string.digits):
