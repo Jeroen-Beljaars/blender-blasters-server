@@ -70,8 +70,7 @@ class Server:
         spawn_powerups = threading.Thread(target=self.spawn_powerups)
         spawn_powerups.start()
 
-        listen = threading.Thread(self.handle_client())
-        listen.start()
+        self.handle_client()
 
     def manager_communication(self):
         manager_ip = network_config['manager_ip']
@@ -217,7 +216,7 @@ class Server:
 
     def server_power(self, manager):
         while True:
-            time.sleep(40)
+            time.sleep(30)
             if not len(self.active_players):
                 manager.sendall(json.dumps({"close": "closed the server: no active players"}).encode())
                 os._exit(1)
@@ -226,6 +225,7 @@ class Server:
         while True:
             self.broadcast_message(json.dumps({"powerup_spawn": randint(1,10)}).encode())
             time.sleep(5)
+
 
 if not network_config['server_manager'] and network_config['local']:
     server = Server([5, 15, 10, 25, 40, 35, 100, 50, 25, False, False, False])

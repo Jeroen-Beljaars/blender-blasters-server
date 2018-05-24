@@ -4,7 +4,7 @@ import json
 from multiprocessing import Process
 import string
 import random
-from server import Server
+from Scripts.Network.server import Server
 
 with open("network_config.json") as file:
     network_config = json.load(file)
