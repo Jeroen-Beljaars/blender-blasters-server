@@ -9,6 +9,7 @@ from server import Server
 with open("network_config.json") as file:
     network_config = json.load(file)
 
+
 class Manager:
     def __init__(self):
         self.capacity = 2
@@ -111,7 +112,7 @@ class Manager:
         while True:
             client, addr = self.server.accept()
             ip = "{}:{}".format(addr[0], addr[1])
-            client_handler = threading.Thread(target=self.handle_client,args=(client,))
+            client_handler = threading.Thread(target=self.handle_client, args=(client,))
             client_handler.start()
 
     def new_server(self, config):
@@ -120,11 +121,12 @@ class Manager:
         server.start()
         print("[i] New server started")
 
-    def generate_dns(self, size=6, chars=string.ascii_uppercase + string.digits):
+    def generate_dns(self, size=3, chars=string.ascii_uppercase + string.digits):
         while True:
             dns = ''.join(random.choice(chars) for _ in range(size))
             if dns not in self.database['dns'].keys():
                 return dns
+
 
 if __name__ == '__main__':
     manager = Manager()

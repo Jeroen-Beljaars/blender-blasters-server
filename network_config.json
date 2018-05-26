@@ -1,6 +1,6 @@
 {
-  "local": true,
-  "server_manager": true,
-  "manager_ip": "127.0.0.1",
-  "server_ip": "127.0.0.1"
+    "local": false,
+    "server_manager": true,
+    "manager_ip": "127.0.0.1",
+    "server_ip": "127.0.0.1"
 }
