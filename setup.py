@@ -1,8 +1,6 @@
 import os
 import sys
 import json
-import requests
-from pynput.keyboard import Key, Controller
 
 operating_system = sys.platform
 if 'win' in operating_system:
@@ -10,6 +8,11 @@ if 'win' in operating_system:
           "the server is ment to run on a linux server!")
 elif 'linux' in operating_system:
     os.system("pip install -r requirements.txt")
+
+    # import the installed packages
+    import requests
+    from pynput.keyboard import Key, Controller
+    
     ip = requests.get("http://ipecho.net/plain?").text
     network_config = {
         "local": False,
