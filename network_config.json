@@ -1,6 +1,1 @@
-{
-    "local": false,
-    "server_manager": true,
-    "manager_ip": "127.0.0.1",
-    "server_ip": "127.0.0.1"
-}
+{"local": false, "manager_ip": "209.97.128.138", "server_ip": "209.97.128.138", "server_manager": true}
