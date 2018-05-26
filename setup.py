@@ -5,10 +5,10 @@ from time import sleep
 from subprocess import run
 
 operating_system = sys.platform
-if 'wint' in operating_system:
+if 'win' in operating_system:
     print("Sorry setup.py is not supported on windows\n" \
           "the server is ment to run on a linux server!")
-elif 'win' in operating_system:
+elif 'linux' in operating_system:
     run("apt-get install python-pip")
     run("pip3 install -r requirements.txt")
 
