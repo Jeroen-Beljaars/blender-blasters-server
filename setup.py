@@ -2,16 +2,18 @@ import os
 import sys
 import json
 from time import sleep
+from subprocess import Popen
 
 operating_system = sys.platform
 if 'win' in operating_system:
     print("Sorry setup.py is not supported on windows\n" \
           "the server is ment to run on a linux server!")
 elif 'linux' in operating_system:
-    os.system("apt-get install python-pip")
-    sleep(3)
-    os.system("pip3 install -r requirements.txt")
-    sleep(7)
+    while not os.system("apt-get install python-pip"):
+        pass
+
+    while not os.system("pip3 install -r requirements.txt"):
+        pass
 
     # import the installed packages
     import requests
@@ -26,12 +28,15 @@ elif 'linux' in operating_system:
     }
     with open('network_config.json', 'w') as network_json:
         json.dump(network_config, network_json)
-    os.system("sudo apt-get update")
-    sleep(30)
-    os.system("sudo apt-get install screen")
-    sleep(10)
+    
+    while not os.system("sudo apt-get update"):
+        pass
+    
+    while not os.system("sudo apt-get install screen"):
+        pass
+
     os.system("screen")
-    sleep(2)
+    sleep(1)
     os.system("python3 manage_servers.py")
     sleep(1)
     keyboard = Controller()
