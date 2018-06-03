@@ -4,7 +4,7 @@ import json
 from multiprocessing import Process
 import string
 import random
-from server import Server
+from Scripts.Network.server import Server
 
 with open("network_config.json") as file:
     network_config = json.load(file)
@@ -51,7 +51,7 @@ class Manager:
                     if client not in self.hosting_clients:
                         if len(self.database['server_infos']) < self.capacity:
                             self.hosting_clients[client] = ""
-                            self.new_server(decoded_packet['host_server']['config'],
+                            self.new_server(decoded_packet['host_server'],
                                             decoded_packet['host_server']['matches'])
                             self.requester.append(client)
                             break
