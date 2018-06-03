@@ -4,7 +4,7 @@ import json
 from multiprocessing import Process
 import string
 import random
-from server import Server
+from Scripts.Network.server import Server
 
 with open("network_config.json") as file:
     network_config = json.load(file)
@@ -22,8 +22,6 @@ class Manager:
         self.server.bind((self.ip, self.port))
         self.server.listen(5)
         print("[i] Manager started")
-
-        self.server_ips = ["oege.ie.hva.nl", "127.0.0.1:9998"]
 
         self.database = {
             'server_infos': {},
@@ -53,7 +51,8 @@ class Manager:
                     if client not in self.hosting_clients:
                         if len(self.database['server_infos']) < self.capacity:
                             self.hosting_clients[client] = ""
-                            self.new_server(decoded_packet['host_server'])
+                            self.new_server(decoded_packet['host_server']['config'],
+                                            decoded_packet['host_server']['matches'])
                             self.requester.append(client)
                             break
                         else:
@@ -115,8 +114,8 @@ class Manager:
             client_handler = threading.Thread(target=self.handle_client, args=(client,))
             client_handler.start()
 
-    def new_server(self, config):
-        server = Process(target=Server, args=(config,))
+    def new_server(self, config, matches):
+        server = Process(target=Server, args=(config, matches))
         server.daemon = True
         server.start()
         print("[i] New server started")

@@ -18,9 +18,9 @@ with open("network_config.json") as file:
     network_config = json.load(file)
 
 class Server:
-    def __init__(self, config):
+    def __init__(self, config, matches):
         """ Initialize the server """
-
+        self.matches = matches
         self.config = config
         print(self.config)
         # The ip of the machine where the server is running on
@@ -163,7 +163,8 @@ class Server:
                 'ip': ip,
                 'object': 'Tank',
                 'team': team,
-                'config': self.config
+                'config': self.config,
+                'matches': self.matches,
             }
         }
 
