@@ -55,8 +55,6 @@ class Server:
             'team2': []
         }
 
-        self.acknowledge = False
-
         if network_config['server_manager']:
             manager = threading.Thread(target=self.manager_communication)
             manager.start()
@@ -120,8 +118,6 @@ class Server:
                     if 'shoot' in decoded_request.keys():
                         # Stuur het pakketje door naar de clients
                         self.broadcast_message(request)
-                    if 'ack' in decoded_request.keys():
-                        self.acknowledge = True
                 except:
                     pass
             except socket.error:

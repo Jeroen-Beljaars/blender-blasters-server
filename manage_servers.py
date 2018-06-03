@@ -12,7 +12,7 @@ with open("network_config.json") as file:
 
 class Manager:
     def __init__(self):
-        self.capacity = 2
+        self.capacity = 3
         self.threads = []
 
         self.ip = network_config['manager_ip']
